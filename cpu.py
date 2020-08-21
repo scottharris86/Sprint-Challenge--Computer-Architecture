@@ -204,29 +204,41 @@ class CPU:
                 # print(self.flag)
                 pc_count = 3
 
-            # elif cmd == JMP:
-            #     self.jump()
+            elif cmd == JMP:
+                jump_to = self.registers[self.ram[pc + 1]]
+                pc = self.jump(jump_to, pc)
+                pc_count = 0
 
             elif cmd == JEQ:
                 if self.flag == 1:
-                    print("We JEQ'ed")
-                    jump_to = self.ram[pc + 1]
-                    self.jump(jump_to)
-
-                    # pc_count = 0
+                    # print("We JEQ'ed")
+                    jump_to = self.registers[self.ram[pc + 1]]
+                    pc = self.jump(jump_to, pc)
+                    pc_count = 0
+                else:
+                    pc_count = 2
 
             elif cmd == JNE:
                 if self.flag != 1:
-                    print("We JNE'ed")
+                    # print("We JNE'ed")
                     jump_to = self.registers[self.ram[pc + 1]]
-                    print(f"jump_to is {jump_to}")
-                    self.jump(jump_to)
-
+                    # print(f"jump_to is {jump_to}")
+                    pc = self.jump(jump_to, pc)
                     pc_count = 0
+                else:
+                    # pc_count = 0
+                    pc_count = 2
 
             pc += pc_count
             # print(f"PC is now: {pc}")
 
 
-    def jump(self, somewhere):
-        self.pc = somewhere
+    def jump(self, somewhere, pc):
+        pc = somewhere
+        return pc
+
+
+# cpu = CPU()
+# # filename = sys.argv[1]
+# cpu.load('sctest.ls8')
+# cpu.run()
